@@ -14,5 +14,16 @@
 			"    REFERENCES $2 (id_$2);"
 		],
 		"description": "Alter Table Snippet"
+	},
+	"Bloco anonimo": {
+		"prefix": "declare",
+		"body": [
+			"DECLARE",
+			"    $1",
+			"BEGIN",
+			"    $2",
+			"END;"
+		],
+		"description": "Bloco de anônimo PL\\SQL"
 	}
 }

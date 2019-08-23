@@ -25,4 +25,15 @@ BEGIN
 END;
 
 -- 4. Informar o total de projetos realizados para um cliente específico.
+DECLARE
+    total NUMBER;
+    idcliente Cliente.id_cliente%type;
+BEGIN
+    idcliente := :idcliente;
+    SELECT count(p.id_projeto) INTO total FROM Projeto p
+        INNER JOIN Projeto_Cliente pc ON p.id_projeto = pc.projeto_id
+        WHERE pc.cliente_id = idcliente;
+    dbms_output.put_line('Total de projetos para o cliente ' || idcliente || ': ' || total);
+END;
+
 -- 5. Informar o código do empregado e imprimir na tela os nomes dos projetos que esse empregado está vinculado.
