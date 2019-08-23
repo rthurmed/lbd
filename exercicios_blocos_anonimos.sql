@@ -37,3 +37,15 @@ BEGIN
 END;
 
 -- 5. Informar o código do empregado e imprimir na tela os nomes dos projetos que esse empregado está vinculado.
+DECLARE
+    codemp Empregado.id_empregado%type;
+BEGIN
+    codemp := :codemp;
+    dbms_output.put_line('Projetos do empregado ' || codemp || ':');
+    FOR projeto IN (SELECT p.nome FROM Empregado e
+                        INNER JOIN Trabalhano t ON e.id_empregado = t.empregado_id
+                        INNER JOIN Projeto p ON t.projeto_id = p.id_projeto
+                        WHERE e.id_empregado = codemp) LOOP
+        dbms_output.put_line(projeto.nome);
+    END LOOP;
+END;
