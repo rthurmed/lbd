@@ -1,4 +1,4 @@
-/* Modelo dia 02-08-2019: */
+-- @author rthurmed
 
 CREATE TABLE Departamento (
     id_departamento NUMBER CONSTRAINT pkdepartamento PRIMARY KEY,
