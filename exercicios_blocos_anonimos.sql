@@ -17,5 +17,12 @@ BEGIN
 END;
 
 -- 3. Informar o total de projetos já realizados pela empresa.
+DECLARE
+    qtd Number;
+BEGIN
+    SELECT count(*) INTO qtd FROM Projeto;
+    dbms_output.put_line('Total de projetos já realizados pela empresa: ' || qtd);
+END;
+
 -- 4. Informar o total de projetos realizados para um cliente específico.
 -- 5. Informar o código do empregado e imprimir na tela os nomes dos projetos que esse empregado está vinculado.
