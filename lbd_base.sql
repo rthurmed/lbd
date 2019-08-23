@@ -69,40 +69,40 @@ CREATE TABLE Projeto_Cliente (
  
 ALTER TABLE Empregado ADD CONSTRAINT fk_emp_dep
     FOREIGN KEY (departamento_id)
-    REFERENCES Departamento (id_departamento));
+    REFERENCES Departamento (id_departamento);
 
 ALTER TABLE Projeto ADD CONSTRAINT fk_projeto_departamento
     FOREIGN KEY (departamento_id)
-    REFERENCES Departamento (id_departamento));
+    REFERENCES Departamento (id_departamento);
 
 ALTER TABLE Projeto ADD CONSTRAINT fk_projeto_gerente
     FOREIGN KEY (gerente_id)
-    REFERENCES Empregado (id_empregado));
+    REFERENCES Empregado (id_empregado);
 
 ALTER TABLE Dependente ADD CONSTRAINT fk_dependente_empregado
     FOREIGN KEY (empregado_id)
-    REFERENCES Empregado (id_empregado));
+    REFERENCES Empregado (id_empregado);
 
 ALTER TABLE Gerencia ADD CONSTRAINT fk_gerencia_empregado
     FOREIGN KEY (empregado_id)
-    REFERENCES Empregado (id_empregado));
+    REFERENCES Empregado (id_empregado);
 
 ALTER TABLE Gerencia ADD CONSTRAINT fk_gerencia_departamento
     FOREIGN KEY (departamento_id)
-    REFERENCES Departamento (id_departamento));
+    REFERENCES Departamento (id_departamento);
 
 ALTER TABLE Trabalhano ADD CONSTRAINT fk_trabalhano_projeto
     FOREIGN KEY (projeto_id)
-    REFERENCES Projeto (id_projeto));
+    REFERENCES Projeto (id_projeto);
 
 ALTER TABLE Trabalhano ADD CONSTRAINT fk_trabalhano_empregado
     FOREIGN KEY (empregado_id)
-    REFERENCES Empregado (id_empregado));
+    REFERENCES Empregado (id_empregado);
 
 ALTER TABLE Projeto_Cliente ADD CONSTRAINT fk_projcli_projeto
     FOREIGN KEY (projeto_id)
-    REFERENCES Projeto (id_projeto));
+    REFERENCES Projeto (id_projeto);
 
 ALTER TABLE Projeto_Cliente ADD CONSTRAINT fk_projcli_cliente
     FOREIGN KEY (cliente_id)
-    REFERENCES Cliente (id_cliente));
+    REFERENCES Cliente (id_cliente);

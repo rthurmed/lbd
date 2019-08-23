@@ -11,7 +11,7 @@
 		"body": [
 			"ALTER TABLE $1 ADD CONSTRAINT fk_$1_$2",
 			"    FOREIGN KEY ($2_id)",
-			"    REFERENCES $2 (id_$2));"
+			"    REFERENCES $2 (id_$2);"
 		],
 		"description": "Alter Table Snippet"
 	}
