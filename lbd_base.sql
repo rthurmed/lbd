@@ -94,3 +94,15 @@ ALTER TABLE Gerencia ADD CONSTRAINT fk_gerencia_departamento
 ALTER TABLE Trabalhano ADD CONSTRAINT fk_trabalhano_projeto
     FOREIGN KEY (projeto_id)
     REFERENCES Projeto (id_projeto));
+
+ALTER TABLE Trabalhano ADD CONSTRAINT fk_trabalhano_empregado
+    FOREIGN KEY (empregado_id)
+    REFERENCES Empregado (id_empregado));
+
+ALTER TABLE Projeto_Cliente ADD CONSTRAINT fk_projcli_projeto
+    FOREIGN KEY (projeto_id)
+    REFERENCES Projeto (id_projeto));
+
+ALTER TABLE Projeto_Cliente ADD CONSTRAINT fk_projcli_cliente
+    FOREIGN KEY (cliente_id)
+    REFERENCES Cliente (id_cliente));
