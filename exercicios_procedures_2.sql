@@ -1,0 +1,18 @@
+-- Com base na estrutura criada em sala de aula do esquema EmpresaProjeto, realizar:
+-- 1. Criar um procedimento que recebe como parâmetro o nome de um projeto e 
+--    imprima na tela o nome de todos os funcionários desse projeto. 
+--
+--    O projeto NOME, data de início, do departamento X (nome departamento) apresenta os seguintes funcionários:
+--    NOME FUNCIONÁRIO 1 - HORAS TRABALHADAS - NOME DEPARTAMENTO DO FUNCIONÁRIO
+--    NOME FUNCIONÁRIO 2 - HORAS TRABALHADAS - NOME DEPARTAMENTO DO FUNCIONÁRIO
+--    ...
+
+-- 2. Criar um procedimento que apresente o seguinte relatório:
+--
+--    Projetos que estão em aberto:
+--    NOME PROJETO 1 - DATA DE INÍCIO - NOME CLIENTE
+--    NOME PROJETO 2 - DATA DE INÍCIO - NOME CLIENTE
+--
+--    Projetos que já estão encerrados:
+--    NOME PROJETO 1 - DATA DE INÍCIO - DATA FIM - NOME CLIENTE
+--    NOME PROJETO 2 - DATA DE INÍCIO - DATA FIM - NOME CLIENTE
