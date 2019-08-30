@@ -50,6 +50,30 @@ END;
 --    retornar como parâmetro de saída o nome do gerente desse funcionário. No
 --    bloco anônimo informar a seguinte mensagem: O funcionário NOME tem como 
 --    gerente o NOMEGERENTE
+CREATE OR REPLACE PROCEDURE gerente_dele(
+    nomeemp IN Empregado.nome%type,
+    gerente OUT Empregado.nome%type
+) AS
+BEGIN
+    SELECT e.nome
+    INTO gerente
+    FROM Empregado e
+    INNER JOIN Gerencia g ON e.id_empregado = g.empregado_id
+    -- Quando data_fim é nulo significa que é o gerente atual
+    WHERE g.data_fim IS NULL AND g.departamento_id = (
+        SELECT e.departamento_id
+        FROM Empregado e
+        WHERE e.nome = nomeemp);
+END;
+
+DECLARE
+    emp Empregado.nome%type;
+    ger Empregado.nome%type;
+BEGIN
+    emp := :emp;
+    gerente_dele(emp, ger);
+    dbms_output.put_line('O funcionário ' || emp || ' tem como gerente o ' || ger);
+END;
 
 -- 4. Criar um procedimento que receba como parâmetro o nome do departamento e 
 --    imprimir em tela o nome de todos os funcionários vinculados aquele 
