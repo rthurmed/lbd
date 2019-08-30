@@ -101,10 +101,28 @@ BEGIN
     funcs_dep('Unidade de desenvolvimento de sistemas');
 END
 
--- 5. Criar um procedimento que recebe como parâmetro onome de um projeto e 
+-- 5. Criar um procedimento que recebe como parâmetro o nome de um projeto e 
 --    imprima na tela o nome de todos os funcionários desse projeto. 
 --
 --    O projeto NOME apresenta os seguintes funcionários
 --    NOME FUNCIONÁRIO 1
 --    NOME FUNCIONÁRIO 2
 --    ...
+CREATE OR REPLACE PROCEDURE funcs_proj(
+    nomeproj Projeto.nome%type
+) AS
+BEGIN
+    dbms_output.put_line('O projeto ' || nomeproj || ' apresenta os seguintes funcionários:');
+    FOR funcionario IN (
+        SELECT e.nome FROM Empregado e
+        INNER JOIN Trabalhano t ON e.id_empregado = t.empregado_id
+        INNER JOIN Projeto p ON t.projeto_id = p.id_projeto
+        WHERE p.nome = nomeproj
+    ) LOOP
+        dbms_output.put_line(funcionario.nome);
+    END LOOP;
+END;
+
+BEGIN
+    funcs_proj('OJT');
+END;
