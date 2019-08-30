@@ -4,6 +4,28 @@
 
 -- 2. Criar um procedimento que recebe como parâmetro o nome de um projeto e o 
 --    nome de um cliente e informar se aquele projeto é desse cliente ou não
+CREATE OR REPLACE PROCEDURE projeto_pertence (
+    proj IN Projeto.nome%type,
+    clie IN Cliente.nome%type
+) AS
+    qtd NUMBER;
+BEGIN
+    SELECT count(pc.id_projeto_cliente)
+    INTO qtd
+    FROM Projeto p
+    INNER JOIN Projeto_Cliente pc ON p.id_projeto = pc.projeto_id
+    INNER JOIN Cliente c ON pc.cliente_id = c.id_cliente
+    WHERE p.nome = proj AND c.nome = clie;
+    IF qtd > 0 THEN
+        dbms_output.put_line(proj || ' pertence ao cliente ' || clie);
+    ELSE
+        dbms_output.put_line(proj || ' não pertence ao cliente ' || clie);
+    END IF;
+END;
+
+BEGIN
+    projeto_pertence('OJT', 'Pascal');
+END;
 
 -- 3. Criar um procedimento que recebe como parâmetro o nome de funcionário e 
 --    retornar como parâmetro de saída o nome do gerente desse funcionário. No
