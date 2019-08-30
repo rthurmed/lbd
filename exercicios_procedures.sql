@@ -1,6 +1,25 @@
 -- Com base na estrutura criada em sala de aula do esquema EmpresaProjeto, realizar:
 -- 1. Criar um procedimento que receba como parâmetro o nome do empregado e 
 --    informar na tela o nome do departamento.
+CREATE OR REPLACE PROCEDURE qual_dep (
+    nome IN Empregado.nome%type
+) AS
+    dep Departamento.nome%type;
+BEGIN
+    SELECT d.nome 
+    INTO dep 
+    FROM Empregado e
+    INNER JOIN Departamento d ON d.id_departamento = e.departamento_id
+    WHERE e.nome = nome;
+    dbms_output.put_line('Departamento: ' || dep);
+END;
+
+DECLARE
+    nome = Empregado.nome%type;
+BEGIN
+    nome := :nome;
+    qual_dep(nome);
+END
 
 -- 2. Criar um procedimento que recebe como parâmetro o nome de um projeto e o 
 --    nome de um cliente e informar se aquele projeto é desse cliente ou não
