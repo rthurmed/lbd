@@ -83,6 +83,23 @@ END;
 --    Nome funcionário 1
 --    Nome funcionário 2
 --    ....
+CREATE OR REPLACE PROCEDURE funcs_dep(
+    nomedep Departamento.nome%type
+) AS
+BEGIN
+    dbms_output.put_line('O departamento ' || nomedep || ' apresenta os seguintes funcionários:');
+    FOR funcionario IN (
+        SELECT e.nome FROM Empregado e
+        INNER JOIN Departamento d ON d.id_departamento = e.departamento_id
+        WHERE d.nome = nomedep
+    ) LOOP
+        dbms_output.put_line(funcionario.nome);
+    END LOOP;
+END;
+
+BEGIN
+    funcs_dep('Unidade de desenvolvimento de sistemas');
+END
 
 -- 5. Criar um procedimento que recebe como parâmetro onome de um projeto e 
 --    imprima na tela o nome de todos os funcionários desse projeto. 
