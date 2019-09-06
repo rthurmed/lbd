@@ -23,6 +23,23 @@ END;
 -- 2. Criar uma função que recebe como parâmetro a matrícula do funcionário e 
 --    retornar o nome desse funcionário.
 
+CREATE OR REPLACE FUNCTION func_nome (
+    matricula IN Empregado.id_empregado%type
+) 
+RETURN Empregado.nome%type AS
+    nomeEmp Empregado.nome%type;
+BEGIN
+    SELECT nome 
+    INTO nomeEmp
+    FROM Empregado
+    WHERE id_empregado = matricula;
+    RETURN nomeEmp;
+END;
+
+BEGIN
+    dbms_output.put_line('Nome do funcionário 1: ' || func_nome(1));
+END;
+
 -- 3. Criar uma função que recebe o código de um departamento e retornar o 
 --    total de projetos já vinculados nesse departamento.
 
