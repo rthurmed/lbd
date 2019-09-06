@@ -62,3 +62,22 @@ END;
 
 -- 4. Criar uma função que recebe como parâmetro o nome de um cliente e retorne 
 --    a quantidade total de projetos que esse cliente já realizou.
+
+CREATE OR REPLACE FUNCTION cliente_proj_count(
+    nomeCliente IN Cliente.nome%type
+)
+RETURN NUMBER AS
+    qtd NUMBER;
+BEGIN
+    SELECT count(po.cliente_id)
+    INTO qtd
+    FROM Projeto_Cliente po
+    INNER JOIN Cliente c ON po.cliente_id = c.id_cliente
+    WHERE c.nome = nomeCliente;
+    RETURN qtd;
+END;
+
+BEGIN
+    dbms_output.put_line('O cliente Pascal já realizou ' || 
+        cliente_proj_count('Pascal') || ' projetos');
+END;
