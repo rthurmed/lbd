@@ -9,6 +9,28 @@
 --    retornar o total de horas desse projeto, considerando os funcionários 
 --    alocados ao projeto.
 
+CREATE OR REPLACE FUNCTION proj_total_horas (
+    nomeProjeto IN Projeto.nome%type
+)
+RETURN NUMBER AS
+    total NUMBER;
+BEGIN
+    SELECT sum(t.horas)
+    INTO total
+    FROM Trabalhano t
+    INNER JOIN Projeto p ON t.projeto_id = p.id_projeto
+    WHERE p.nome = nomeProjeto;
+    RETURN total;
+END;
+
+DECLARE
+    nomeProj Projeto.nome%type;
+BEGIN
+    nomeProj := :nomeProj;
+    dbms_output.put_line('O projeto ' || nomeProj || ' teve um total de ' 
+        || proj_total_horas(nomeProj) || ' horas trabalhadas');
+END;
+
 -- 2. Criar um procedimento que recebe como parâmetro o nome de um projeto e 
 --    imprima na tela:
 -- 
