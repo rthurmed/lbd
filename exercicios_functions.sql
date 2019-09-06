@@ -43,5 +43,22 @@ END;
 -- 3. Criar uma função que recebe o código de um departamento e retornar o 
 --    total de projetos já vinculados nesse departamento.
 
+CREATE OR REPLACE FUNCTION dep_proj_count (
+    codigo IN Departamento.id_departamento%type
+)
+RETURN NUMBER AS
+    qtd NUMBER;
+BEGIN
+    SELECT count(departamento_id)
+    INTO qtd
+    FROM Projeto
+    WHERE departamento_id = codigo;
+    RETURN qtd;
+END;
+
+BEGIN
+    dbms_output.put_line('O departamento 1 possue ' || dep_proj_count(1) || ' projetos');
+END;
+
 -- 4. Criar uma função que recebe como parâmetro o nome de um cliente e retorne 
 --    a quantidade total de projetos que esse cliente já realizou.
