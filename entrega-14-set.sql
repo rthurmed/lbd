@@ -64,14 +64,42 @@ END;
 
 -- 3. Criar um procedimento que imprima na tela a seguinte tela:
 -- 
--- NOME PROJETO 1 – DATA DE INÍCIO – NOME CLIENTE
+-- NOME PROJETO 1 - DATA DE INÍCIO - NOME CLIENTE
 -- Apresenta os seguintes funcionários:
--- NOME FUNCIONÁRIO 1 – HORAS TRABALHADAS
--- NOME FUNCIONÁRIO 2 – HORAS TRABALHADAS
+-- NOME FUNCIONÁRIO 1 - HORAS TRABALHADAS
+-- NOME FUNCIONÁRIO 2 - HORAS TRABALHADAS
 -- ....
--- NOME PROJETO 2 – DATA DE INÍCIO – NOME CLIENTE
+-- NOME PROJETO 2 - DATA DE INÍCIO - NOME CLIENTE
 -- Apresenta os seguintes funcionários:
--- NOME FUNCIONÁRIO 1 – HORAS TRABALHADAS
--- NOME FUNCIONÁRIO 2 – HORAS TRABALHADAS
+-- NOME FUNCIONÁRIO 1 - HORAS TRABALHADAS
+-- NOME FUNCIONÁRIO 2 - HORAS TRABALHADAS
 -- ....
 
+CREATE OR REPLACE PROCEDURE relatorio_projetos AS
+BEGIN
+    FOR proj IN (
+        SELECT p.id_projeto as id, p.nome as nome, p.data_inicio as inicio, c.nome as cliente
+        FROM Projeto p
+        INNER JOIN Projeto_Cliente po ON p.id_projeto = po.projeto_id
+        INNER JOIN Cliente c ON po.cliente_id = c.id_cliente
+    ) LOOP
+        dbms_output.put_line(
+            proj.nome || ' - ' || 
+            proj.inicio || ' - ' || 
+            proj.cliente);
+        dbms_output.put_line('Apresenta os seguintes funcionários:');
+        FOR funcionario IN (
+            SELECT e.nome as nome, t.horas as horas
+            FROM Empregado e
+            INNER JOIN Trabalhano t ON e.id_empregado = t.empregado_id
+            WHERE t.projeto_id = proj.id
+        ) LOOP
+            dbms_output.put_line(funcionario.nome || ' - ' || funcionario.horas || 'h');
+        END LOOP;
+        dbms_output.put_line('');
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_projetos();
+END;
