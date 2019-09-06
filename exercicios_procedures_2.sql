@@ -50,3 +50,41 @@ END;
 --    Projetos que já estão encerrados:
 --    NOME PROJETO 1 - DATA DE INÍCIO - DATA FIM - NOME CLIENTE
 --    NOME PROJETO 2 - DATA DE INÍCIO - DATA FIM - NOME CLIENTE
+
+CREATE OR REPLACE PROCEDURE relatorio_projetos AS
+BEGIN
+    -- Projeto em aberto
+    dbms_output.put_line('Projetos que estão em aberto:');
+    FOR projeto IN (
+        SELECT p.nome as nome, p.data_inicio as inicio, c.nome as cliente
+        FROM Projeto p
+        INNER JOIN Projeto_Cliente po ON p.id_projeto = po.projeto_id
+        INNER JOIN Cliente c ON po.cliente_id = c.id_cliente
+        WHERE p.data_fim IS NULL
+    ) LOOP
+        dbms_output.put_line(
+            projeto.nome || ' - ' || 
+            projeto.inicio || ' - ' || 
+            projeto.cliente);
+    END LOOP;
+    dbms_output.put_line('');
+    -- Projetos encerrados
+    dbms_output.put_line('Projetos que já estão encerrados:');
+    FOR projeto IN (
+        SELECT p.nome as nome, p.data_inicio as inicio, p.data_fim as fim, c.nome as cliente
+        FROM Projeto p
+        INNER JOIN Projeto_Cliente po ON p.id_projeto = po.projeto_id
+        INNER JOIN Cliente c ON po.cliente_id = c.id_cliente
+        WHERE p.data_fim IS NOT NULL
+    ) LOOP
+        dbms_output.put_line(
+            projeto.nome || ' - ' || 
+            projeto.inicio || ' - ' || 
+            projeto.fim || ' - ' ||
+            projeto.cliente);
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_projetos();
+END;
