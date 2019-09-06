@@ -35,9 +35,32 @@ END;
 --    imprima na tela:
 -- 
 --    O projeto X (nome projeto) apresentou o total de horas de: (usar a função do exercício 1 para mostrar o total de horas) e tem os seguintes funcionais alocados ao projeto:
---    NOME FUNCIONÁRIO 1 – HORAS TRABALHADA NO PROJETO
---    NOME FUNCIONÁRIO 2 – HORAS TRABALHANDA NO PROJETO
+--    NOME FUNCIONÁRIO 1 - HORAS TRABALHADA NO PROJETO
+--    NOME FUNCIONÁRIO 2 - HORAS TRABALHANDA NO PROJETO
 --    ...
+
+CREATE OR REPLACE PROCEDURE relatorio_projeto_func (
+    nomeProj Projeto.nome%type
+) AS
+BEGIN
+    dbms_output.put_line('O projeto ' || nomeProj 
+        || ' apresentou o total de horas de: ' || proj_total_horas(nomeProj) 
+        || ' e tem os seguintes funcionais alocados ao projeto:');
+    FOR funcionario IN (
+        SELECT e.nome as nome, t.horas as horas
+        FROM Empregado e
+        INNER JOIN Trabalhano t ON e.id_empregado = t.empregado_id
+        INNER JOIN Projeto p ON t.projeto_id = p.id_projeto
+        WHERE p.nome = nomeProj
+        GROUP BY e.nome
+    ) LOOP
+        dbms_output.put_line(funcionario.nome || ' - ' || funcionario.horas);
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_projeto_func('OJT');
+END;
 
 -- 3. Criar um procedimento que imprima na tela a seguinte tela:
 -- 
