@@ -7,6 +7,40 @@
 --    NOME FUNCIONÁRIO 2 - HORAS TRABALHADAS - NOME DEPARTAMENTO DO FUNCIONÁRIO
 --    ...
 
+CREATE OR REPLACE PROCEDURE relatorio_funcs_proj(
+    nomeproj IN Projeto.nome%type
+) AS
+    inicio DATE;
+    departamento VARCHAR2(255);
+BEGIN
+    SELECT p.data_inicio, d.nome 
+    INTO inicio, departamento
+    FROM Projeto p 
+    INNER JOIN Departamento d ON p.departamento_id = d.id_departamento
+    WHERE p.nome = nomeproj;
+    dbms_output.put_line('O projeto ' || nomeproj || ', ' || inicio || 
+        ', do departamento ' || departamento || 
+        ' apresenta os seguintes funcionários:');
+    FOR funcionario IN (
+        SELECT e.nome, sum(t.horas) as horas, d.nome AS departamento 
+        FROM Empregado e
+        INNER JOIN Trabalhano t ON e.id_empregado = t.empregado_id
+        INNER JOIN Projeto p ON t.projeto_id = p.id_projeto
+        INNER JOIN Departamento d ON e.departamento_id = d.id_departamento
+        WHERE p.nome = nomeproj
+        GROUP BY e.nome, d.nome
+    ) LOOP
+        dbms_output.put_line(
+            funcionario.nome || ' - ' || 
+            funcionario.horas || 'h - ' || 
+            funcionario.departamento);
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_funcs_proj('OJT');
+END;
+
 -- 2. Criar um procedimento que apresente o seguinte relatório:
 --
 --    Projetos que estão em aberto:
