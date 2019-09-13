@@ -73,6 +73,30 @@ END;
 --    o total de dependentes desse funcionário. O retorno da função deve ser 
 --    apresentada no bloco anônimo.
 
+CREATE OR REPLACE FUNCTION get_total_dependentes (
+    nomefunc IN Empregado.nome%type
+) 
+RETURN NUMBER AS
+    total NUMBER;
+BEGIN
+    SELECT count(d.nome)
+    INTO total
+    FROM Dependente d
+    INNER JOIN Empregado e ON d.empregado_id = e.id_empregado
+    WHERE e.nome = nomefunc;
+    RETURN total;
+END;
+
+DECLARE
+    nome Empregado.nome%type;
+    dependentes NUMBER;
+BEGIN
+    nome := :nome;
+    dependentes := get_total_dependentes(nome);
+    dbms_output.put_line('O funcionário ' || nome || ' tem ' || dependentes 
+        || ' dependentes');
+END;
+
 -- 4. Faça um procedimento que imprima na tela o seguinte relatório.
 -- 
 --    O funcionário X (nome) tem o total de Y dependentes (usar a função criada anteriormente)
