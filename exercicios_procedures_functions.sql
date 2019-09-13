@@ -47,19 +47,31 @@ END;
 -- 
 --    Para mostrar o total de horas do projeto usar uma função
 
+CREATE OR REPLACE FUNCTION get_horas_do_projeto(
+    nomeproj IN Projeto.nome%type
+) 
+RETURN NUMBER AS
+    total NUMBER;
+BEGIN
+    SELECT sum(t.horas)
+    INTO total
+    FROM Projeto p
+    INNER JOIN Trabalhano t ON p.id_projeto = t.projeto_id 
+    WHERE p.nome = nomeproj;
+    RETURN total;
+END;
+
 CREATE OR REPLACE PROCEDURE relatorio_projetos_de_clientes AS
 BEGIN
     FOR clie IN (SELECT id_cliente, nome FROM Cliente) LOOP
         dbms_output.put_line('O cliente ' || clie.nome || ' apresenta os seguintes projetos:');
         FOR proj IN (
-            SELECT p.nome, sum(t.horas) as horas
+            SELECT p.nome
             FROM Projeto p
-            INNER JOIN Trabalhano t ON p.id_projeto = t.projeto_id 
             INNER JOIN Projeto_Cliente pc ON p.id_projeto = pc.projeto_id
             WHERE pc.cliente_id = clie.id_cliente
-            GROUP BY p.nome
         ) LOOP
-            dbms_output.put_line(proj.nome || ' - ' || proj.horas);
+            dbms_output.put_line(proj.nome || ' - ' || get_horas_do_projeto(proj.nome));
         END LOOP;
         dbms_output.put_line('');
     END LOOP;
