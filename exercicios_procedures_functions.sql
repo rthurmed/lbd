@@ -122,6 +122,26 @@ END;
 --    Caso o funcionário não tenha dependentes (ou seja 0) não deve informar os 
 --    nomes dos dependentes.
 
+CREATE OR REPLACE PROCEDURE relatorio_func_dependentes AS
+BEGIN
+    FOR funcionario IN (SELECT nome, id_empregado FROM Empregado) LOOP
+        dbms_output.put_line('O funcionário ' || funcionario.nome 
+            || ' tem o total de ' || get_total_dependentes(funcionario.nome) 
+            || ' dependentes');
+        FOR depen IN (
+            SELECT nome FROM Dependente
+            WHERE empregado_id = funcionario.id_empregado
+        ) LOOP
+            dbms_output.put_line(depen.nome);
+        END LOOP;
+        dbms_output.put_line('');
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_func_dependentes();
+END;
+
 -- 5. Faça um procedimento que imprima a seguinte tela:
 -- 
 --    Os seguintes projetos foram finalizados após a data prevista de fim:
