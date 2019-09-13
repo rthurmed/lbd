@@ -41,11 +41,33 @@ END;
 --    Nome Projeto 2 - total de horas
 --    ....
 --    O cliente Y (nome) apresenta os seguintes projetos:
---    Nome Projeto 1 -total de horas
---    Nome Projeto 2 -total de horas
+--    Nome Projeto 1 - total de horas
+--    Nome Projeto 2 - total de horas
 --    ....
 -- 
 --    Para mostrar o total de horas do projeto usar uma função
+
+CREATE OR REPLACE PROCEDURE relatorio_projetos_de_clientes AS
+BEGIN
+    FOR clie IN (SELECT id_cliente, nome FROM Cliente) LOOP
+        dbms_output.put_line('O cliente ' || clie.nome || ' apresenta os seguintes projetos:');
+        FOR proj IN (
+            SELECT p.nome, sum(t.horas) as horas
+            FROM Projeto p
+            INNER JOIN Trabalhano t ON p.id_projeto = t.projeto_id 
+            INNER JOIN Projeto_Cliente pc ON p.id_projeto = pc.projeto_id
+            WHERE pc.cliente_id = clie.id_cliente
+            GROUP BY p.nome
+        ) LOOP
+            dbms_output.put_line(proj.nome || ' - ' || proj.horas);
+        END LOOP;
+        dbms_output.put_line('');
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_projetos_de_clientes();
+END;
 
 -- 3. Faça uma função que receba como parâmetro o nome do funcionário e retorne
 --    o total de dependentes desse funcionário. O retorno da função deve ser 
