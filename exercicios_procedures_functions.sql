@@ -149,6 +149,27 @@ END;
 --    Nome projeto 2 - data de início - data de fim prevista - data real final
 --    ...
 
+-- Coloca um fim depois da data de previsao
+UPDATE Projeto
+SET data_fim = '10-05-1989'
+WHERE id_projeto = 2
+
+CREATE OR REPLACE PROCEDURE projetos_com_atraso AS
+BEGIN
+    dbms_output.put_line('Os seguintes projetos foram finalizados após a data prevista de fim:');
+    FOR proj IN (
+        SELECT nome, data_inicio, data_fim, data_previsao_fim
+        FROM Projeto
+        WHERE data_fim > data_previsao_fim
+    ) LOOP
+        dbms_output.put_line(proj.nome || ' - ' || proj.data_inicio || ' - ' || proj.data_previsao_fim || ' - ' || proj.data_fim);
+    END LOOP;
+END;
+
+BEGIN
+    projetos_com_atraso();
+END;
+
 -- 6. Faça uma função que retorno o número total de projetos que foram 
 -- encerrados dentro do prazo. No bloco anônimo imprimir a informação.
 
