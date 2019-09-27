@@ -171,7 +171,25 @@ BEGIN
 END;
 
 -- 6. Faça uma função que retorno o número total de projetos que foram 
--- encerrados dentro do prazo. No bloco anônimo imprimir a informação.
+--    encerrados dentro do prazo. No bloco anônimo imprimir a informação.
+UPDATE Projeto
+SET data_previsao_fim = '15-DEC-2001', data_fim = '01-DEC-2001'
+WHERE id_projeto = 5
+
+CREATE OR REPLACE FUNCTION qtd_projetos_no_prazo 
+RETURN NUMBER AS
+    total NUMBER;
+BEGIN
+    SELECT count(p.id_projeto)
+    INTO total
+    FROM Projeto p
+    WHERE p.data_fim < p.data_previsao_fim;
+    return total;
+END;
+
+BEGIN
+    dbms_output.put_line('Quantidade de projeto encerrados dentro do prazo: ' || qtd_projetos_no_prazo());
+END;
 
 -- 7. Faça um procedimento que recebe como parâmetro o nome de um departamento 
 --    e imprima na tela o nome de todos os funcionários que já foram gerentes 
