@@ -6,10 +6,10 @@ INSERT INTO Produto (cod_prod, nome, descricao, preco) VALUES (1, 'Mesa', 'descr
 INSERT INTO Produto (cod_prod, nome, descricao, preco) VALUES (2, 'Cadeira', 'descricao de cadeira', 520)
 INSERT INTO Produto (cod_prod, nome, descricao, preco) VALUES (3, 'Toalha', 'descricao de toalha', 1220)
 
-INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (1, '11-11-2001', 1000, 1)
-INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (2, '09-12-2012', 2123, 2)
-INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (3, '13-10-2017', 2313, 3)
-INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (4, '01-08-2009', 3131, 1)
+INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (1, '11-NOV-2001', 1000, 1)
+INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (2, '09-DEC-2012', 2123, 2)
+INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (3, '13-OCT-2017', 2313, 3)
+INSERT INTO NotaFiscal (cod_nota, data, valor, codc) VALUES (4, '01-AUG-2009', 3131, 1)
 
 INSERT INTO Nota_Prod (cod_nota, cod_prod, quantidade) VALUES (1, 1, 2)
 INSERT INTO Nota_Prod (cod_nota, cod_prod, quantidade) VALUES (1, 2, 3)
@@ -23,7 +23,7 @@ INSERT INTO Financeira (cod_fin, nome, endereco, txjuros) VALUES (1, 'Almeida Co
 INSERT INTO Financeira (cod_fin, nome, endereco, txjuros) VALUES (2, 'Lima e Filhos', 'Praça de Rocha, 56', 0.4)
 INSERT INTO Financeira (cod_fin, nome, endereco, txjuros) VALUES (3, 'Fogaça Vieira S.A.', 'Campo Jesus, 432', 0.34)
 
-INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (1, 1, 15, '01-11-2001', 1231)
-INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (2, 2, 20, '07-12-2012', 1451)
-INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (3, 2, 13, '03-10-2017', 1561)
-INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (4, 3, 60, '30-07-2009', 1548)
+INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (1, 1, 15, '01-NOV-2001', 1231)
+INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (2, 2, 20, '07-DEC-2012', 1451)
+INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (3, 2, 13, '03-OCT-2017', 1561)
+INSERT INTO Financiam (cod_nota, cod_fin, numparc, data, valor) VALUES (4, 3, 60, '30-JUL-2009', 1548)
