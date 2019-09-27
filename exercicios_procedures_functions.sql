@@ -195,3 +195,35 @@ END;
 --    e imprima na tela o nome de todos os funcionários que já foram gerentes 
 --    daquele departamento. Caso o departamento não tenha ou nunca teve um 
 --    gerente, imprimir a mensagem: Departamento sem gerente.
+CREATE OR REPLACE PROCEDURE relatorio_gerente_de(
+    depnome IN Departamento.nome%type
+) AS
+    qtd_gerentes NUMBER;
+BEGIN
+    SELECT count(g.id_gerencia)
+    INTO qtd_gerentes
+    FROM Departamento d
+    INNER JOIN Gerencia g ON d.id_departamento = g.departamento_id
+    WHERE d.nome = depnome;
+    IF qtd_gerentes < 1 THEN
+        dbms_output.put_line('Departamento sem gerente');
+    ELSE 
+        dbms_output.put_line('Gerentes:');
+        FOR gerente IN (
+            SELECT e.nome FROM Departamento d
+            INNER JOIN Gerencia g ON d.id_departamento = g.departamento_id
+            INNER JOIN Empregado e ON g.empregado_id = e.id_empregado
+            WHERE d.nome = depnome
+        ) LOOP
+            dbms_output.put_line(gerente.nome);
+        END LOOP;
+    END IF;
+END;
+
+DECLARE
+    dep Departamento.nome%type;
+BEGIN
+    dep := :dep;
+    dbms_output.put_line('Relatório funcionários que já foram gerentes de ' || dep);
+    relatorio_gerente_de(dep);
+END;
