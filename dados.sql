@@ -2,7 +2,7 @@
 
 -- INSERT INTO () VALUES();
 
-CREATE SEQUENCE _sequencia_empresa;
+-- CREATE SEQUENCE _sequencia_empresa;
 
 --------------------
 CREATE SEQUENCE departamento_sequencia_empresa;
