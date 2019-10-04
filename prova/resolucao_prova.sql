@@ -61,6 +61,25 @@ END;
 -- 3. Faça um procedimento que receba como parâmetro de entrada o número de uma 
 --    nota fiscal e retorne como parâmetro de saída o total de produtos vendidos
 --    nessa nota. Mostrar esse valor no bloco chamador.
+CREATE OR REPLACE PROCEDURE nf_total_produtos(
+    cod_nf IN NotaFiscal.cod_nota%type,
+    total_prod OUT NUMBER
+) AS
+BEGIN
+    SELECT count(np.cod_prod)
+    INTO total_prod
+    FROM Nota_Prod np
+    WHERE np.cod_nota = cod_nf;
+END;
+
+DECLARE
+    nota_cod NotaFiscal.cod_nota%type;
+    total NUMBER;
+BEGIN
+    nota_cod := :nota_cod;
+    nf_total_produtos(nota_cod, total);
+    dbms_output.put_line('Total de produtos vendidos na nota ' || nota_cod || ': ' || total);
+END;
 
 -- 4. Faça um procedimento que apresente a seguinte saída:
 -- 
