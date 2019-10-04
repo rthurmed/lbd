@@ -1,6 +1,26 @@
 -- 1. Faça uma função que receba como parâmetro o código de um produto. A função
 --    deve retornar o total (em valor) já obtivo pela venda desse produto 
 --    (o valor total já vendido em todas as notas). Mostre esse valor no bloco chamador. 
+CREATE OR REPLACE FUNCTION valor_produto(
+    prod IN Produto.cod_prod%type
+) 
+RETURN NUMBER AS
+    total NUMBER;
+BEGIN
+    SELECT sum(nf.valor)
+    INTO total
+    FROM Nota_Prod np
+    INNER JOIN NotaFiscal nf ON np.cod_nota = nf.cod_nota
+    WHERE np.cod_prod = prod;
+    RETURN total;
+END;
+
+DECLARE
+    prod_id NUMBER;
+BEGIN
+    prod_id := :prod_id;
+    dbms_output.put_line('Valor do produto ' || prod_id || ': ' || valor_produto(prod_id));
+END;
 
 -- 2. Faça um procedimento que apresente a seguinte saída:
 -- 
