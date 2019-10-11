@@ -54,5 +54,26 @@ END;
 --     ◦ Caso o empregado não tenha trabalhado em nenhum projeto, informe: 
 --         ▪ <Fulano de Tal> ainda não trabalhou em projetos
 
+CREATE OR REPLACE PROCEDURE relatorio_qtd_trab
+AS 
+BEGIN
+    FOR r IN (
+        SELECT e.nome as empregado, count(t.empregado_id) as quantidade
+        FROM Empregado e
+        LEFT JOIN Trabalhano t ON t.empregado_id = e.id_empregado
+        GROUP BY e.nome
+    ) LOOP
+        IF r.quantidade > 0 THEN
+            dbms_output.put_line(r.empregado || 'já trabalhou em ' || r.quantidade || ' projetos');
+        ELSE
+            dbms_output.put_line(r.empregado || ' ainda não trabalhou em projetos');
+        END IF;
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_qtd_trab();
+END;
+
 -- 4. Selecione 3 procedimentos criados anteriormente que utilizem laço e 
 --    alterar para usar cursores. Pelo menos 1 deles deve utilizar dois (2) FOR.
