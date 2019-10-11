@@ -8,6 +8,24 @@
 --    trabalhadas. Apresente: 
 --     ◦ <Fulano de Tal> trabalha no <Projeto XX> <TANTAS> horas.
 
+CREATE OR REPLACE PROCEDURE relatorio_trabalhano
+AS
+BEGIN
+    FOR r IN (
+        SELECT e.nome as empregado, p.nome as projeto, sum(t.horas) as horas
+        FROM Projeto p 
+        INNER JOIN Trabalhano t ON t.projeto_id = p.id_projeto
+        INNER JOIN Empregado e ON t.empregado_id = e.id_empregado
+        GROUP BY p.nome, e.nome
+    ) LOOP
+        dbms_output.put_line(r.empregado || ' trabalha no ' || r.projeto || ' ' || r.horas || ' horas.');
+    END LOOP;
+END;
+
+BEGIN
+    relatorio_trabalhano();
+END;
+
 -- 2. Crie um procedimento que apresente o nome de cada um dos departamentos e, 
 --    ao lado o nome de cada Gerente: 
 --     ◦ <Departamento X>: <Gerente X>
