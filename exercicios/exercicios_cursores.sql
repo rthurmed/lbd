@@ -30,6 +30,24 @@ END;
 --    ao lado o nome de cada Gerente: 
 --     ◦ <Departamento X>: <Gerente X>
 
+CREATE OR REPLACE PROCEDURE gerentes_deps
+AS 
+BEGIN
+    FOR gerente IN (
+        SELECT d.nome as departamento, e.nome
+        FROM Departamento d
+        INNER JOIN Gerencia g ON d.id_departamento = g.departamento_id
+        INNER JOIN Empregado e ON g.empregado_id = e.id_empregado
+    ) LOOP
+        dbms_output.put_line(gerente.departamento || ': ' || gerente.nome);
+    END LOOP;
+END;
+
+BEGIN
+    dbms_output.put_line('Gerentes de cada departamento: ');
+    gerentes_deps();
+END;
+
 -- 3. Crie um procedimento que apresente a quantidade de projetos em que cada 
 --    empregado trabalhou:
 --     ◦ <Fulano de Tal> já trabalhou em <X> projetos. 
