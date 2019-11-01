@@ -77,3 +77,30 @@ END;
 
 -- 4. Selecione 3 procedimentos criados anteriormente que utilizem laço e 
 --    alterar para usar cursores. Pelo menos 1 deles deve utilizar dois (2) FOR.
+
+-- 4.1.
+
+CREATE OR REPLACE PROCEDURE relatorio_trabalhano_cursor
+AS
+    CURSOR emp_proj_horas IS 
+        SELECT e.nome as empregado, p.nome as projeto, sum(t.horas) as horas
+        FROM Projeto p 
+        INNER JOIN Trabalhano t ON t.projeto_id = p.id_projeto
+        INNER JOIN Empregado e ON t.empregado_id = e.id_empregado
+        GROUP BY p.nome, e.nome;
+    empregado VARCHAR2(255);
+    projeto VARCHAR2(255);
+    horas NUMBER;
+BEGIN
+    OPEN emp_proj_horas;
+    LOOP
+        FETCH emp_proj_horas INTO empregado, projeto, horas;
+        EXIT WHEN emp_proj_horas%NOTFOUND;
+        dbms_output.put_line(empregado || ' trabalha no ' || projeto || ' ' || horas || ' horas.');
+    END LOOP;
+    CLOSE emp_proj_horas;
+END;
+
+BEGIN
+    relatorio_trabalhano_cursor();
+END;
