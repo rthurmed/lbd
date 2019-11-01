@@ -1,6 +1,26 @@
 -- 1. Crie uma triggers que, após inserir uma tupla na tabela trabalhano, 
---    imprime a seguinte informação: O empregado de nome TAL está alocado ao 
---    projeto TAL em tantas HORAS. 
+--    imprime a seguinte informação: 
+--    O empregado de nome TAL está alocado ao projeto TAL em tantas HORAS. 
+
+CREATE OR REPLACE TRIGGER imprime_trabalhano 
+    AFTER INSERT ON Trabalhano
+    FOR EACH ROW
+DECLARE
+    nomeemp Empregado.nome%type;
+    nomeproj Projeto.nome%type;
+BEGIN
+    SELECT nome 
+    INTO nomeemp 
+    FROM Empregado
+    WHERE id_empregado = :new.empregado_id;
+    SELECT nome
+    INTO nomeproj
+    FROM Projeto
+    WHERE id_projeto = :new.projeto_id;
+    dbms_output.put_line('O empregado de nome ' || nomeemp || ' está alocado ao projeto ' || nomeproj || ' em ' || :new.horas || ' horas. ');
+END;
+
+INSERT INTO Trabalhano(projeto_id,empregado_id,horas) VALUES(4,3,60);
 
 -- 2. Crie uma trigger que não permita a inserção de dependentes que não sejam 
 --    filhos dos empregados. (FILHO ou FILHA). 
