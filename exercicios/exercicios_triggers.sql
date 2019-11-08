@@ -25,6 +25,22 @@ INSERT INTO Trabalhano(projeto_id,empregado_id,horas) VALUES(4,3,60);
 -- 2. Crie uma trigger que não permita a inserção de dependentes que não sejam 
 --    filhos dos empregados. (FILHO ou FILHA). 
 
+CREATE OR REPLACE TRIGGER somente_filhos
+    BEFORE INSERT ON Dependente
+    FOR EACH ROW
+DECLARE
+    nao_filho EXCEPTION;
+BEGIN
+    IF lower(:new.parentesco) != lower('FILHO') AND lower(:new.parentesco) != lower('FILHA') THEN
+        RAISE nao_filho;
+    END IF;
+EXCEPTION
+    WHEN nao_filho THEN
+        RAISE_APPLICATION_ERROR(-20502, 'Só podem ser inseridos filhos');
+END;
+
+INSERT INTO Dependente(id_dependente,nome,sexo,data_nasc,parentesco,empregado_id) VALUES(dependente_sequencia_empresa.nextval,'Roberto Ribos','Masculino','06-JUL-2006','Pai',3);
+
 -- 3. Crie uma trigger que não permita a inserção de empregados com idade menor
 --    do que 16 anos. 
 
