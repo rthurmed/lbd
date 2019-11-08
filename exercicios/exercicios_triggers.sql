@@ -93,6 +93,22 @@ INSERT INTO Trabalhano(projeto_id,empregado_id,horas) VALUES(2,2,26);
 --    anteriormente inserido. Não permita atualização de salário para valor 
 --    inferior.
 
+CREATE OR REPLACE TRIGGER nao_pode_diminuir_salario
+    BEFORE UPDATE ON Empregado
+    FOR EACH ROW
+DECLARE
+    novo_salario_menor EXCEPTION;
+BEGIN
+    IF :new.salario < :old.salario THEN
+        RAISE novo_salario_menor;
+    END IF;
+EXCEPTION 
+    WHEN novo_salario_menor THEN 
+        RAISE_APPLICATION_ERROR(-20505, 'Não é possível diminuir o salário de um empregado.');
+END;
+
+UPDATE Empregado SET salario = 2000 WHERE id_empregado = 1;
+
 -- 6. Crie uma tabela de LOG com as seguintes informações: data e descrição. 
 --    Essa tabela receberá informações de todas as inserções e atualizações 
 --    feitas na tabela ProjetoEmpregado. Portanto, crie um trigger que armazene
