@@ -61,9 +61,32 @@ END;
 INSERT INTO Empregado(id_empregado,nome,data_nasc,end,sexo,salario,data_admissao,departamento_id) VALUES(empregado_sequencia_empresa.nextval,'Vitor Xavier','28-FEB-2006','Rua do qualquer lugar','Masculino','3400','02-OCT-2008',4);
 
 -- 4. Crie uma trigger que ao informar um funcionário para um projeto verificar
---    se ele já não está alocadomais de 200h em outros projetos. Caso ele
+--    se ele já não está alocado mais de 200h em outros projetos. Caso ele
 --    esteja já com mais de 200h deve informar mensagem que o funcionário não
 --    pode ser alocado ao projeto X, caso contrário, ele poderá ser inserido.
+
+UPDATE Trabalhano SET horas = 260 WHERE empregado_id = 2 AND projeto_id = 2;
+
+CREATE OR REPLACE TRIGGER muitas_horas
+    BEFORE INSERT ON Trabalhano
+    FOR EACH ROW
+DECLARE
+    mais_de_200_horas EXCEPTION;
+    total NUMBER;
+BEGIN
+    SELECT sum(horas) 
+    INTO total 
+    FROM Trabalhano
+    WHERE empregado_id = :new.empregado_id;
+    IF total >= 200 THEN
+        RAISE mais_de_200_horas;
+    END IF;
+EXCEPTION
+    WHEN mais_de_200_horas THEN
+        RAISE_APPLICATION_ERROR(-20504, 'O limite de horas que um empregado pode trabalhar é de 200 horas');
+END;
+
+INSERT INTO Trabalhano(projeto_id,empregado_id,horas) VALUES(2,2,26);
 
 -- 5. Crie um trigger que analise, no momento da atualização de dados na tabela
 --    empregado, se o salário que está sendo atualizado é maior ou igual ao 
