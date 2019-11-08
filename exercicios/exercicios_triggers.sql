@@ -44,6 +44,22 @@ INSERT INTO Dependente(id_dependente,nome,sexo,data_nasc,parentesco,empregado_id
 -- 3. Crie uma trigger que não permita a inserção de empregados com idade menor
 --    do que 16 anos. 
 
+CREATE OR REPLACE TRIGGER idade_minima_emp
+    BEFORE INSERT ON Empregado
+    FOR EACH ROW
+DECLARE
+    pouca_idade EXCEPTION;
+BEGIN
+    IF :new.data_nasc > sysdate - 16*365.25 THEN
+        RAISE pouca_idade;
+    END IF;
+EXCEPTION
+    WHEN pouca_idade THEN
+        RAISE_APPLICATION_ERROR(-20503, 'Empregados devem ter mais de 16 anos');
+END;
+
+INSERT INTO Empregado(id_empregado,nome,data_nasc,end,sexo,salario,data_admissao,departamento_id) VALUES(empregado_sequencia_empresa.nextval,'Vitor Xavier','28-FEB-2006','Rua do qualquer lugar','Masculino','3400','02-OCT-2008',4);
+
 -- 4. Crie uma trigger que ao informar um funcionário para um projeto verificar
 --    se ele já não está alocadomais de 200h em outros projetos. Caso ele
 --    esteja já com mais de 200h deve informar mensagem que o funcionário não
