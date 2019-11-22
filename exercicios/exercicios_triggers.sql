@@ -117,3 +117,36 @@ UPDATE Empregado SET salario = 2000 WHERE id_empregado = 1;
 --    Inserção na tabela ProjetoEmpregado, o empregado Nome empregado foi 
 --    alocado ao projeto Nome projeto com XX horas, após operações feitas na 
 --    tabela Venda.
+
+CREATE TABLE LOG (
+    id_log NUMBER CONSTRAINT pklog PRIMARY KEY,
+    data DATE,
+    descricao VARCHAR2(255)
+);
+
+CREATE SEQUENCE log_sequencia;
+
+CREATE OR REPLACE TRIGGER mudancas_trabalhano
+    BEFORE INSERT OR UPDATE ON Trabalhano
+    FOR EACH ROW
+DECLARE
+    nomeemp VARCHAR2(255);
+    nomeproj VARCHAR2(255);
+BEGIN
+    SELECT nome
+    INTO nomeemp
+    FROM Empregado
+    WHERE id_empregado = :new.empregado_id;
+    SELECT nome
+    INTO nomeproj
+    FROM Projeto
+    WHERE id_projeto = :new.projeto_id;
+    IF INSERTING THEN
+        INSERT INTO LOG(id_log, data, descricao) VALUES(log_sequencia.nextval, sysdate, 'Inserção na tabela Trabalhano, o empregado ' || nomeemp || ' foi alocado ao projeto ' || nomeproj || ' com ' || :new.horas || ' horas, após operações feitas na tabela Trabalhano.');
+    END IF;
+    IF UPDATING THEN
+        INSERT INTO LOG(id_log, data, descricao) VALUES(log_sequencia.nextval, sysdate, 'Atualização na tabela Trabalhano, o empregado ' || nomeemp || ' foi alocado ao projeto ' || nomeproj || ' com ' || :new.horas || ' horas, após operações feitas na tabela Trabalhano.');
+    END IF;
+END;
+
+UPDATE Trabalhano SET horas = 50 WHERE empregado_id = 3 AND projeto_id = 4
